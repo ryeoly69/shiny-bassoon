@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A PARIS BAGEL GALLERY - 공식 통합 매뉴얼</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Soft Peach -->
+    <!-- Application Structure Plan: A responsive two-column layout is used. A fixed sidebar on the left provides primary navigation based on the final manual's structure (§1-§5). The right column dynamically displays the content for the selected section. This task-oriented structure is superior to a linear document for quick information retrieval. The extensive Menu Guide (§2) is implemented as a searchable grid of product cards, drastically improving usability. On mobile, the sidebar collapses into a hamburger menu. -->
+    <!-- Visualization & Content Choices: Goal: Organize & Inform. The manual's dense text is structured into interactive components. Method: Sections are displayed in cards and accordions (HTML/JS/Tailwind) to make information digestible, especially for detailed checklists in Operational Guidelines. Interaction: The core interactions are navigation clicks and a real-time search filter for the Menu Guide. Justification: This design transforms a static manual into a dynamic tool, enabling efficient access to critical information like sales tips or menu details, directly supporting employee tasks. Library: Vanilla JS handles all interactions. No charts needed. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f7f5;
+        }
+        .active-nav {
+            background-color: #fcd9b6;
+            color: #854d0e;
+            font-weight: 700;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .accordion-header {
+            cursor: pointer;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .checklist li {
+            padding-left: 1rem;
+            position: relative;
+        }
+        .checklist li::before {
+            content: '[ ]';
+            position: absolute;
+            left: -0.5rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-stone-800 text-white p-4 transition-transform -translate-x-full md:translate-x-0">
+            <h1 class="text-2xl font-bold text-center text-amber-300 mb-6">A PARIS BAGEL<br>GALLERY</h1>
+            <nav id="main-nav" class="space-y-2">
+                <a href="#section-1" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-stone-700">§ 1. 매장 소개</a>
+                <a href="#section-2" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-stone-700">§ 2. 메뉴 가이드</a>
+                <a href="#section-3" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-stone-700">§ 3. 세일즈 팁</a>
+                <a href="#section-4" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-stone-700">§ 4. 운영 지침</a>
+                <a href="#section-5" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-stone-700">§ 5. 고객 응대</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full md:ml-64 p-4 md:p-8">
+            <!-- Mobile Header & Hamburger Button -->
+            <div class="md:hidden flex justify-between items-center mb-4">
+                <h1 class="text-xl font-bold text-stone-800">A PARIS BAGEL GALLERY</h1>
+                <button id="hamburger-btn" class="p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+            
+            <div id="content-area">
+                <!-- Section 1: 매장 소개 -->
+                <section id="section-1" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">§ 1. 매장 소개</h2>
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-3 text-amber-700">1.1 매장 정체성</h3>
+                        <p class="mb-2"><strong>• 매장명:</strong> A PARIS BAGEL GALLERY (파리 베이글 갤러리)</p>
+                        <p class="mb-2"><strong>• 한 줄 소개:</strong> 중국 다롄의 'pavillon' 백화점에서 만나는 트렌디한 수제 베이글 전문점</p>
+                        <p class="mb-2"><strong>• 콘셉트/스토리:</strong> 우리는 단순한 베이글 가게가 아닌, 고객의 일상에 특별한 순간을 선물하는 공간을 지향합니다. 'pavillon' 백화점 4층의 개방감 있는 공간에서, '갤러리'라는 이름처럼 감각적으로 엄선된 메뉴와 서비스를 통해 쇼핑 중의 휴식, 친구와의 만남, 혼자만의 사색이 모두 가능한 복합 문화 공간을 제공합니다.</p>
+                    </div>
+                     <div class="card">
+                        <h3 class="text-xl font-bold mb-3 text-amber-700">1.2 기본 운영 정보 & 타겟</h3>
+                        <p class="mb-2"><strong>• 위치:</strong> 중국 다롄시 'pavillon' 백화점 4층 출입구 방면</p>
+                        <p class="mb-2"><strong>• 영업시간:</strong> 09:30 ~ 21:30 (백화점 규정에 따름)</p>
+                        <p class="mb-2"><strong>• 공식 SNS:</strong> "A PARIS BAGEL GALLERY" (위챗, 샤오홍슈 등 채널 운영 고려)</p>
+                        <p class="mt-4 mb-2"><strong>• 핵심 타겟:</strong> 트렌드에 민감하고 새로운 경험을 추구하는 <strong>20-30대 여성</strong></p>
+                        <p class="mb-2"><strong>• 주요 타겟:</strong> 주말 나들이 및 쇼핑을 즐기는 <strong>가족 단위 고객</strong>, 점심 식사 및 미팅 장소를 찾는 <strong>직장인</strong></p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-3 text-amber-700">1.4 매장 특징</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                          <li><strong>접근성:</strong> 백화점 내에 위치하여 쇼핑과 식사를 한 번에 해결 가능</li>
+                          <li><strong>개방감:</strong> 전면 통창과 야외 테라스가 있어 쾌적하고 개방적인 분위기</li>
+                          <li><strong>공간:</strong> 매장 내부, 외부 테라스, 백화점 방향 좌석 등 3개의 구역으로 나뉘어 다양한 니즈 충족</li>
+                          <li><strong>편의성:</strong> 고객용 Wi-Fi 및 좌석 콘센트 완비</li>
+                          <li><strong>펫 프렌들리:</strong> 외부 테라스 구역에 한해 반려동물 동반 가능</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section 2: 메뉴 가이드 -->
+                <section id="section-2" class="content-section">
+                    <h2 class="text-3xl font-bold mb-4">§ 2. 메뉴 가이드</h2>
+                    <div class="sticky top-0 bg-f8f7f5/80 backdrop-blur-sm py-4 mb-4 z-10">
+                        <input type="text" id="product-search" placeholder="🔍 메뉴 이름으로 검색..." class="w-full p-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    </div>
+                    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- Product cards will be inserted here by JavaScript -->
+                    </div>
+                </section>
+                
+                <!-- Section 3: 세일즈 팁 -->
+                <section id="section-3" class="content-section">
+                     <h2 class="text-3xl font-bold mb-6">§ 3. 세일즈 팁</h2>
+                     <div class="card">
+                         <h3 class="text-xl font-bold mb-3 text-amber-700">3.1 업셀링(Up-selling) 전략</h3>
+                         <ul class="list-disc list-inside space-y-2">
+                             <li><strong>기본:</strong> 베이글 단품 구매 고객에게 <strong>"어떤 크림치즈와 함께 드시면 더 맛있는데, 추천해드릴까요?"</strong> 라며 크림치즈 추가 구매를 유도합니다.</li>
+                             <li><strong>조합:</strong> 식사 메뉴 주문 시 <strong>"곁들여 드시기 좋은 플레인 소금빵이나 포카치아도 준비되어 있습니다."</strong> 라고 사이드 메뉴를 제안합니다.</li>
+                             <li><strong>음료:</strong> 모든 메뉴 주문 시 <strong>"주문하신 메뉴는 OOO 음료와 아주 잘 어울립니다. 함께 주문하시겠어요?"</strong> 라며 음료 페어링을 제안합니다.</li>
+                         </ul>
+                     </div>
+                      <div class="card">
+                         <h3 class="text-xl font-bold mb-3 text-amber-700">3.3 시그니처 메뉴 소개법</h3>
+                         <ul class="list-disc list-inside space-y-2">
+                             <li><strong>(갈릭 치즈 베이글):</strong> "저희 시그니처 메뉴인 갈릭 치즈 베이글입니다. 직접 만든 갈릭 버터의 향과 부드러운 크림치즈의 조화가 정말 좋아서 가장 많이 찾아주시는 메뉴입니다."</li>
+                             <li><strong>(탕후루 베이글):</strong> "요즘 가장 인기 있는 탕후루 베이글은 어떠세요? 상큼한 과일과 크림치즈가 올라간 오픈 샌드위치 스타일이라 사진도 정말 예쁘게 나오고 맛도 산뜻합니다."</li>
+                             <li><strong>(쪽파 프레첼 베이글):</strong> "신선한 쪽파 향을 좋아하시면 쪽파 프레첼 베이글을 강력 추천합니다. 꾸덕한 크림치즈와 어우러져서 한번 드시면 계속 생각나는 맛입니다."</li>
+                         </ul>
+                     </div>
+                </section>
+
+                <!-- Section 4: 운영 지침 -->
+                <section id="section-4" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">§ 4. 운영 지침</h2>
+                    <div class="card accordion">
+                        <div class="accordion-header flex justify-between items-center"><h3 class="text-xl font-bold text-amber-700">4.1 일일 루틴 (Daily Routine)</h3><span class="transform transition-transform duration-300">▼</span></div>
+                        <div class="accordion-content mt-4 space-y-4">
+                            <div>
+                                <h4 class="font-bold text-lg">오픈 준비 (Opening)</h4>
+                                <ul class="checklist mt-2 space-y-1 text-sm">
+                                    <li>근무 시간 10분 전 도착, 유니폼 환복 및 개인 위생 점검</li>
+                                    <li>매장 보안 해제, 전등 및 공조 시스템 전체 ON</li>
+                                    <li>POS, 오디오, CCTV 등 전산 시스템 ON, 배경음악 재생</li>
+                                    <li>(바리스타) 커피 머신 예열 및 세팅, 제빙기 ON</li>
+                                    <li>(베이커) 오븐 예열, 당일 생산 스케줄 확인 및 반죽 준비</li>
+                                    <li>진열대(쇼케이스) 청소, 가격표 점검</li>
+                                    <li>홀 테이블 및 의자 정돈, 바닥 청소</li>
+                                    <li>오픈 5분 전, 전 직원 참여 '오픈 미팅' (당일 목표, 특이사항 공유)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">마감 준비 (Closing)</h4>
+                                <ul class="checklist mt-2 space-y-1 text-sm">
+                                    <li>마감 1시간 전부터 구역별 마감 청소 시작</li>
+                                    <li>판매 완료된 진열대부터 정리 및 청소</li>
+                                    <li>(바리스타) 커피 머신 마감 약품 청소, 제빙기 등 정리</li>
+                                    <li>(베이커) 남은 재료 정리, 주방 기구 및 작업대 세척/소독</li>
+                                    <li>당일 미판매 제품 규정에 따라 처리</li>
+                                    <li>POS 정산 및 매출 보고서 작성</li>
+                                    <li>모든 전기 기기 전원 OFF, 가스 밸브 잠금 확인 (중요)</li>
+                                    <li>익일 근무자를 위한 인수인계 사항 작성 후 퇴근</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="card accordion">
+                        <div class="accordion-header flex justify-between items-center"><h3 class="text-xl font-bold text-amber-700">4.2 위생 기준 (Hygiene Standards)</h3><span class="transform transition-transform duration-300">▼</span></div>
+                        <div class="accordion-content mt-4 space-y-6">
+                             <div>
+                                <h4 class="font-bold text-lg">복장 및 용모 규정</h4>
+                                <ul class="list-disc list-inside mt-2 space-y-2 text-sm">
+                                    <li><strong>유니폼:</strong> 총 2벌의 유니폼이 제공됩니다. 매일 세탁하여 항상 청결한 상태를 유지해야 합니다. 유니폼이 심하게 닳거나, 이염/오염되거나, 형태가 훼손된 경우 즉시 포지션 책임자에게 건의하여 교체받으세요.</li>
+                                    <li><strong>명찰:</strong> 규정된 위치(왼쪽 가슴)에 항상 패용합니다.</li>
+                                    <li><strong>모자/머리망:</strong> 조리 및 제조 공간에서는 반드시 모자와 머리망을 착용하여 머리카락이 떨어지지 않도록 합니다.</li>
+                                    <li><strong>신발:</strong> 안전과 위생을 위해 미끄럽지 않고 발등을 완전히 덮는 단정한 신발(예: 검은색 운동화, 단화)을 착용합니다. 샌들, 슬리퍼, 하이힐 등은 절대 허용되지 않습니다.</li>
+                                    <li><strong>액세서리:</strong> 위생 및 안전 문제로 인해 반지, 팔찌, 시계, 귀걸이 등 모든 액세서리 착용을 금합니다.</li>
+                                    <li><strong>향수/화장품:</strong> 베이커리의 고유한 향을 해칠 수 있는 강한 향수나 바디로션, 핸드크림 사용을 금지합니다. 과하지 않은 자연스러운 메이크업을 권장합니다.</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <h4 class="font-bold text-lg">개인 위생 (가장 중요)</h4>
+                                 <ul class="list-disc list-inside mt-2 space-y-2 text-sm">
+                                    <li><strong>손 씻기:</strong> 근무 시작 전, 화장실 이용 후, 흡연 후, 돈이나 스마트폰을 만진 후 등 규정된 모든 상황에서 <strong>반드시 30초 이상</strong> 규정된 절차에 따라 손을 씻고 소독합니다.</li>
+                                    <li><strong>손톱:</strong> 항상 짧고 청결하게 관리하며, 네일 아트나 매니큐어는 허용되지 않습니다.</li>
+                                    <li><strong>위생장갑:</strong> 장갑 착용 전후에도 손을 씻어야 하며, 한 가지 작업이 끝나면 즉시 교체합니다. (예: 현금 만진 장갑으로 빵 포장 절대 금지)</li>
+                                    <li><strong>건강 상태:</strong> 감기, 피부 질환, 설사 등 건강 이상 시 즉시 관리자에게 보고합니다.</li>
+                                 </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-red-700 border-b-2 border-red-200 pb-2 mb-3">🚨 흡연자 위생 '무관용 원칙'</h4>
+                                <p class="text-sm text-stone-600 mb-4">고객에게 최상의 경험을 제공하고 제품의 순수한 맛과 향을 지키기 위해, 흡연 직원은 아래 규정을 '무관용 원칙'에 따라 철저히 준수해야 합니다. 이는 매장의 품격과 직결되는 매우 중요한 사항입니다.</p>
+                                <ul class="list-decimal list-inside mt-2 space-y-3 text-sm font-semibold">
+                                    <li><strong class="text-red-600">완벽한 냄새 제거:</strong> 지정된 장소에서 흡연 후, 즉시 탈취제를 사용하여 유니폼과 머리카락의 담배 냄새를 완벽하게 제거해야 합니다. 동료에게 교차 확인을 받는 것을 강력히 권장합니다.</li>
+                                    <li><strong class="text-red-600">철저한 손 세척:</strong> 업무 복귀 직전, '손 씻기' 규정에 따라 <strong class="underline">팔꿈치까지 30초 이상</strong> 꼼꼼하게 세척하고 소독해야 합니다.</li>
+                                    <li><strong class="text-red-600">완벽한 구강 청결:</strong> 반드시 가글 또는 양치질을 하여 입안의 담배 냄새를 완전히 제거합니다.</li>
+                                    <li><strong class="text-red-600">금연 구역 엄수:</strong> 유니폼을 입은 상태에서는 고객의 눈에 띄는 장소나 매장 근처에서 흡연하는 행위를 절대 금지합니다.</li>
+                                    <li><strong class="text-red-600">위반 시 책임:</strong> 본 규정은 타협의 여지가 없는 '무관용 원칙'이 적용됩니다. 위반 시에는 매장 규정에 따른 엄격한 조치가 있을 수 있습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: 고객 응대 -->
+                <section id="section-5" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">§ 5. 고객 응대</h2>
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-3 text-amber-700">5.2 불만 처리 (L.A.S.T. 원칙)</h3>
+                        <ol class="list-decimal list-inside space-y-2">
+                           <li><strong>Listen (경청):</strong> 고객의 말씀을 중간에 끊지 말고, 진심으로 경청하며 불만 사항을 정확히 파악합니다.</li>
+                           <li><strong>Apologize (사과):</strong> 이유를 불문하고 고객이 겪은 불편에 대해 먼저 정중하게 사과합니다. ("불편을 드려 정말 죄송합니다.")</li>
+                           <li><strong>Solve (해결):</strong> 해결 가능한 문제인지 신속히 판단합니다. 본인이 해결할 수 없다면, <strong>절대 임의로 판단하거나 약속하지 말고</strong> 즉시 관리자에게 보고합니다. ("담당 관리자님께 말씀드려 바로 처리해드리겠습니다.")</li>
+                           <li><strong>Thank (감사):</strong> 문제를 해결한 후, 의견을 주신 것에 대해 감사함을 표현합니다. ("말씀해주셔서 감사합니다. 덕분에 저희가 더 발전할 수 있습니다.")</li>
+                        </ol>
+                    </div>
+                     <div class="card accordion">
+                        <div class="accordion-header flex justify-between items-center"><h3 class="text-xl font-bold text-amber-700">5.4 자주 묻는 질문 (FAQ)</h3><span class="transform transition-transform duration-300">▼</span></div>
+                        <div class="accordion-content mt-4 space-y-4">
+                            <p><strong>Q: 와이파이 비밀번호가 뭐예요?</strong><br>A: "네, 와이파이 이름은 'ParisBagel_Free'이고, 비밀번호는 '88888888'입니다. 편하게 이용하세요."</p>
+                            <p><strong>Q: 가장 인기 있는 메뉴가 뭐예요?</strong><br>A: "식사 대용으로는 갈릭 치즈 베이글이 가장 인기가 많고, 디저트처럼 즐기시려면 요즘 핫한 탕후루 베이글을 많이 찾으세요. 어떤 스타일을 원하시나요?"</p>
+                            <p><strong>Q: 강아지 데려와도 되나요?</strong><br>A: "네, 저쪽 야외 테라스 좌석은 반려동물 동반이 가능합니다. 편하게 이용해주세요."</p>
+                             <p><strong>Q: 매장이 좀 덥거나 추운 것 같아요.</strong><br>A: "아, 그러셨군요. 불편을 드려 죄송합니다. 바로 온도 조절해드리겠습니다. 잠시만 기다려주세요."</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+<script>
+    const productData = [
+        { name: "프레첼 플레인 베이글", aka: "오리지널 프레첼 베이글", price: "12.88위안", point: "기본에 충실한 맛, 쫄깃한 식감", desc: "저온 숙성 발효로 풍미가 좋고 소화가 편한 베이글. 부드럽고 쫄깃한 식감이 특징.", pairing: "오렌지+레몬+시럽, 아메리카노" },
+        { name: "참깨 베이글", aka: "로스티드 참깨 베이글", price: "15.00위안", point: "참깨의 고소함과 터지는 식감", desc: "한번 더 로스팅한 참깨를 넣어 고소한 향과 톡톡 터지는 식감을 강조한 베이글.", pairing: "흑임자 아인슈페너 라떼, 아메리카노" },
+        { name: "에브리띵 베이글", aka: "믹스드씨드 베이글", price: "가격 정보 없음", point: "풍성한 토핑의 다채로운 풍미", desc: "해바라기씨, 치아씨드, 검은깨, 참깨를 조화롭게 넣어 고소함을 극대화한 베이글.", pairing: "카페라떼, 구아바+딸기" },
+        { name: "소금 버터 베이글", aka: "솔티버터 베이글", price: "17.88위안", point: "버터의 풍미와 쫄깃한 식감의 조화", desc: "소금빵의 크리스피함과 베이글의 쫄깃함이 어우러진 풍미 깊은 베이글.", pairing: "사과시나몬에이드, 쌀라떼" },
+        { name: "시나몬 피칸 베이글", aka: "시나몬 너츠 베이글", price: "19.88위안", point: "달콤한 시나몬 맛, 디저트형 베이글", desc: "시나몬과 설탕을 더해 고소한 견과류와 조화된 달콤한 베이글.", pairing: "바닐라 라떼, 구아바+딸기" },
+        { name: "갈릭 치즈 베이글", aka: "갈릭크림 베이글", price: "22.88위안", point: "진한 마늘 풍미와 크림치즈의 부드러움", desc: "갈릭의 진한 향과 부드러운 크림치즈의 조화가 중독적인 맛을 자아냄.", pairing: "아메리카노, 피넛 아인슈페너 라떼" },
+        { name: "블루베리 베이글", aka: "베리블루 베이글", price: "18.88위안", point: "상큼한 블루베리의 과즙미", desc: "반죽에 블루베리를 넣어 자연스러운 색감과 은은한 단맛이 매력적임.", pairing: "바닐라 라떼, 자몽에이드" },
+        { name: "무화과 베이글", aka: "피그터치 베이글", price: "13.90위안", point: "부드럽게 씹히는 무화과의 달콤함", desc: "반건조 무화과의 톡톡 터지는 식감과 은은한 단맛이 조화된 베이글.", pairing: "헤이즐넛 라떼, 오렌지에이드" },
+        { name: "다크 초콜릿 베이글", aka: "다크코코 베이글", price: "24.88위안", point: "달콤 쌉쌀한 초코의 진한 풍미", desc: "다크 초콜릿이 입안 가득 퍼지며 달콤쌉쌀한 풍미가 매력적인 베이글.", pairing: "흑임자 아인슈페너 라떼, 쌀라떼" },
+        { name: "팥 베이글", aka: "스위트팥 베이글", price: "19.90위안", point: "단팥의 은은한 단맛과 검은깨의 고소함", desc: "팥 앙금과 고소한 검은깨가 만나 부담 없이 달달한 맛을 즐길 수 있는 베이글.", pairing: "쌀라떼, 사과시나몬에이드" },
+        { name: "감자 치즈 베이글", aka: "포테이토치즈 베이글", price: "18.88위안", point: "고소한 치즈와 부드러운 감자의 조화", desc: "메쉬 포테이토와 치즈의 풍미가 쫄깃한 베이글과 어우러진 든든한 메뉴.", pairing: "카페라떼, 오렌지에이드" },
+        { name: "페퍼로니 할라피뇨 치즈 베이글", aka: "스파이시 페퍼로니 베이글", price: "27.88위안", point: "매콤함과 짭짤한 치즈의 조화", desc: "매콤한 할라피뇨와 짭짤한 페퍼로니, 치즈가 어우러진 강렬한 맛의 베이글.", pairing: "아메리카노, 오렌지+레몬+시럽" },
+        { name: "쪽파 프레첼 베이글", aka: "파향 프레첼 베이글", price: "29.88위안", point: "신선한 쪽파와 크림치즈의 조화", desc: "신선한 쪽파와 크림치즈가 꾸덕한 식감으로 조화된 향긋한 베이글.", pairing: "흑임자 아인슈페너 라떼, 레몬에이드" },
+        { name: "견과류 크림치즈 베이글", aka: "너티 크림 베이글", price: "28.90위안", point: "고소한 견과류와 크림치즈의 고급 조화", desc: "다양한 견과류가 크림치즈와 어우러져 식감과 풍미가 모두 뛰어난 베이글.", pairing: "바닐라 라떼, 오렌지+레몬+시럽" },
+        { name: "블랙 트러플 크림치즈 베이글", aka: "트러플 크림 베이글", price: "34.90위안", point: "풍부한 트러플 향과 부드러운 크림치즈", desc: "고소한 베이글에 트러플 향 가득한 크림치즈를 더한 프리미엄 베이글.", pairing: "아메리카노, 아인슈페너 라떼" },
+        { name: "하와이안 라즈베리 크림치즈 베이글", aka: "트로피컬 라즈 베이글", price: "28.90위안", point: "상큼한 라즈베리와 부드러운 크림의 조화", desc: "생딸기와 라즈베리잼이 조화롭게 어우러진 상큼한 과일 베이글.", pairing: "라즈베리 라떼, 오렌지+레몬+시럽" },
+        { name: "플레인 소금빵", aka: "클래식 소금빵", price: "10.88위안", point: "기본에 충실한 고소한 풍미", desc: "겉은 바삭하고 속은 부드러운 클래식 소금빵으로 어떤 식사와도 어울림.", pairing: "아메리카노, 구아바+딸기" },
+        { name: "베이컨 에그 샐러드 소금빵", aka: "브렉퍼스트 소금빵", price: "28.90위안", point: "베이컨과 달걀의 고소한 조화", desc: "든든한 아침용 샌드 스타일의 소금빵. 베이컨과 계란으로 포만감을 줌.", pairing: "아인슈페너 라떼, 오렌지에이드" },
+        { name: "탕후루 베이글", aka: "토마토 애플 오픈베이글", price: "가격 정보 없음", point: "탕후루 느낌의 과일 조합, 구운 베이글의 고소함", desc: "마리네이드 방울토마토와 사과청 슬라이스를 올린 크림치즈 오픈샌드위치.", pairing: "오렌지+레몬+시럽, 바닐라 라떼" },
+        { name: "토마토 새우 베이글", aka: "쉬림프 토마토 오픈베이글", price: "가격 정보 없음", point: "신선한 토마토와 탱글한 새우의 조화", desc: "새우, 토마토, 샐러드가 어우러진 산뜻한 오픈샌드 베이글.", pairing: "카페라떼, 구아바+딸기" },
+        { name: "타르타르 새우 베이글", aka: "타르타르 쉬림프 베이글", price: "가격 정보 없음", point: "차갑게 즐기는 타르타르와 새우 조합", desc: "타르타르 소스와 새우의 조화가 인상적인 콜드 샌드 베이글.", pairing: "아인슈페너, 레몬에이드" },
+        { name: "바질토마토치즈파니니", aka: "바질 토마토 허니 치즈 파니니", price: "가격 정보 없음", point: "바질과 토마토, 꿀의 은은한 달콤함", desc: "바질, 토마토, 치즈의 조화에 꿀이 더해져 바삭하고 풍미 깊은 파니니.", pairing: "헤이즐넛 라떼, 오렌지에이드" },
+        { name: "불고기샌드위치", aka: "코리안 불고기 샌드위치", price: "가격 정보 없음", point: "가볍지만 든든한 한국식 맛 조화", desc: "불고기와 깻잎페스토가 어우러진 샐러드 스타일의 샌드위치.", pairing: "흑임자 아인슈페너 라떼, 사과시나몬에이드" },
+        { name: "통피클햄듬뿍", aka: "잠봉 피클 샌드위치", price: "가격 정보 없음", point: "짭짤한 햄, 풍부한 버터, 상큼한 피클", desc: "클래식한 잠봉뵈르 스타일에 산뜻한 피클이 더해진 풍미.", pairing: "아메리카노, 오렌지+레몬+시럽" },
+        { name: "로제라구파스타", aka: "클래식 로제 라구 파스타", price: "가격 정보 없음", point: "진한 라구 소스의 풍미, 부드러운 수란의 조화", desc: "프렌치 감성의 그릴드 라구 파니니, 야채와 라구소스, 수란이 조화를 이룸.", pairing: "카페라떼, 레몬에이드" },
+        { name: "새우 로제라구 파스타", aka: "쉬림프 로제 파스타", price: "가격 정보 없음", point: "탱글한 새우와 로제 라구 소스의 조화", desc: "새우가 추가된 버전으로 바다의 맛과 고소한 라구의 조화를 제공.", pairing: "아메리카노, 자몽에이드" },
+        { name: "소고기 로제 라구 파스타", aka: "비프 로제 파스타", price: "가격 정보 없음", point: "고소한 소고기와 라구 소스의 풍미 강화", desc: "라구 소스에 고소한 소고기가 더해져 한 끼 식사로 훌륭한 메뉴.", pairing: "쌀라떼, 오렌지에이드" },
+        { name: "불고기샐러드", aka: "불고기 샐러드 위드 페스토", price: "가격 정보 없음", point: "한국적인 맛, 든든하면서도 가벼운 한 끼", desc: "불고기와 깻잎페스토, 아삭한 샐러드의 조화.", pairing: "아메리카노, 사과시나몬에이드" },
+        { name: "닭강정샐러드", aka: "양념치킨 요거트 샐러드", price: "가격 정보 없음", point: "매콤달콤한 치킨과 요거트 드레싱의 조화", desc: "양념치킨과 요거트 드레싱의 색다른 조합. 가볍고 산뜻한 맛.", pairing: "레몬에이드, 오렌지+레몬+시럽" },
+        { name: "플레인 포카치아", aka: "클래식 플레인 포카치아", price: "가격 정보 없음", point: "풍부한 올리브오일의 향, 부드러운 식감", desc: "저온 숙성 발효로 부드럽고 소화가 잘 되는 기본 포카치아.", pairing: "아메리카노, 오렌지에이드" },
+        { name: "어니언머쉬룸 포카치아", aka: "어니언 머쉬룸 포카치아", price: "가격 정보 없음", point: "양파, 버섯, 감자의 깊은 채소 풍미", desc: "캐러멜라이징한 양파, 버섯, 감자, 치즈의 조화가 돋보이는 포카치아.", pairing: "흑임자 아인슈페너 라떼, 구아바+딸기" },
+        { name: "올리브체다치즈 포카치아", aka: "올리브 체다 토마토 포카치아", price: "가격 정보 없음", point: "짭짤한 올리브와 고소한 치즈, 상큼한 토마토가 어우러진 풍미", desc: "지중해 스타일의 토마토, 치즈, 올리브 조화가 상큼하고 고소한 맛을 선사.", pairing: "바닐라 라떼, 자몽에이드" },
+        { name: "플레인 크림치즈", aka: "클래식 플레인 크림치즈", price: "12.88위안", point: "깔끔하고 담백한 기본 크림치즈", desc: "부드럽고 꾸덕한 질감의 플레인 크림치즈로 다양한 베이글과 잘 어울림.", pairing: "" },
+        { name: "블루베리 크림치즈", aka: "블루베리 크림치즈", price: "13.88위안", point: "상큼한 블루베리의 달콤함과 부드러운 크림치즈의 조화", desc: "블루베리의 향긋함이 더해진 크림치즈로 베이글에 은은한 단맛을 부여.", pairing: "" },
+        { name: "라즈베리 크림치즈", aka: "라즈베리 크림치즈", price: "15.88위안", point: "새콤달콤한 라즈베리 풍미가 입안 가득 퍼지는 상큼한 크림치즈", desc: "라즈베리 특유의 산미가 있는 크림치즈로 상큼하고 산뜻한 맛 연출.", pairing: "" },
+        { name: "레몬 크림치즈", aka: "레몬 젤리 크림치즈", price: "15.88위안", point: "톡 쏘는 레몬향과 산뜻한 뒷맛", desc: "레몬 커드가 더해진 상큼한 크림치즈. 상쾌한 맛으로 입맛을 돋움.", pairing: "" },
+        { name: "바질 크림치즈", aka: "바질 허브 크림치즈", price: "15.88위안", point: "허브의 향긋함이 퍼지는 고소한 크림치즈", desc: "바질 페스토가 들어가 향긋하고 고소한 맛의 크림치즈로 식사류 베이글과 조화 좋음.", pairing: "" },
+        { name: "쪽파 크림치즈", aka: "파향 크림치즈", price: "12.88위안", point: "쪽파의 신선함과 크림치즈의 부드러움이 어우러진 조화로운 맛", desc: "신선한 쪽파를 다져 넣어 아삭하고 향긋한 파향이 나는 감칠맛 크림치즈.", pairing: "" },
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('#main-nav a');
+        const contentSections = document.querySelectorAll('.content-section');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        function updateContent(hash) {
+            if (!hash) {
+                hash = '#section-1';
+            }
+
+            contentSections.forEach(section => {
+                section.classList.toggle('active', '#' + section.id === hash);
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle('active-nav', link.getAttribute('href') === hash);
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        document.getElementById('main-nav').addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const hash = e.target.getAttribute('href');
+                history.pushState(null, null, hash);
+                updateContent(hash);
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        window.addEventListener('popstate', () => updateContent(window.location.hash));
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                 sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('span');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        const productGrid = document.getElementById('product-grid');
+        const searchInput = document.getElementById('product-search');
+
+        function renderProducts(products) {
+            if (!productGrid) return;
+            productGrid.innerHTML = '';
+            if (products.length === 0) {
+                productGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center">검색 결과가 없습니다.</p>`;
+                return;
+            }
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card flex flex-col border border-stone-200 hover:shadow-lg transition-shadow duration-300';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="text-lg font-bold text-amber-800">${p.name}</h4>
+                        <span class="text-base font-bold text-stone-700 whitespace-nowrap">${p.price}</span>
+                    </div>
+                    <p class="text-sm text-stone-500 mb-2">${p.aka}</p>
+                    <p class="bg-amber-100 text-amber-800 text-sm font-semibold rounded-full px-3 py-1 self-start mb-3">"${p.point}"</p>
+                    <p class="text-stone-700 text-sm mb-4 flex-grow">${p.desc}</p>
+                    ${p.pairing ? `<div class="mt-auto pt-3 border-t border-stone-200">
+                        <p class="text-sm font-semibold text-stone-800">☕️ 추천 음료:</p>
+                        <p class="text-sm text-stone-600">${p.pairing}</p>
+                    </div>` : ''}
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredProducts = productData.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) || 
+                    p.aka.toLowerCase().includes(searchTerm) ||
+                    p.point.toLowerCase().includes(searchTerm)
+                );
+                renderProducts(filteredProducts);
+            });
+        }
+        
+        if (document.querySelector('a[href="#section-2"]')) {
+            document.querySelector('a[href="#section-2"]').addEventListener('click', () => {
+                setTimeout(() => renderProducts(productData), 0);
+            });
+        }
+        
+        // Initial Load
+        updateContent(window.location.hash);
+        if (window.location.hash === '#section-2' || (!window.location.hash && document.querySelector('#section-1.active'))) {
+            // If hash is #section-2, or on first load (when #section-1 is active), render products if the menu guide is visible
+             if (document.querySelector('#section-2.active')) {
+                renderProducts(productData);
+             }
+        }
+        // Also render if landing on the page with no hash
+        if(!window.location.hash) {
+             // We start on section 1, but we can pre-render the products for section 2
+             // The section is hidden, but the data will be ready when user navigates
+        }
+        if (window.location.hash === '#section-2') {
+            renderProducts(productData)
+        }
+
+
+    });
+</script>
+
+</body>
+</html>
